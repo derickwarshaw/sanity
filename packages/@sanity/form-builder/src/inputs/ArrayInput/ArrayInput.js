@@ -6,6 +6,7 @@ import Button from 'part:@sanity/components/buttons/default'
 import RenderItemValue from './ItemValue'
 import styles from './styles/ArrayInput.css'
 import randomKey from './randomKey'
+import {map} from 'rxjs/operators'
 import PatchEvent, {insert, set, setIfMissing, unset} from '../../PatchEvent'
 import resolveListComponents from './resolveListComponents'
 import {resolveTypeName} from '../../utils/resolveTypeName'
@@ -281,7 +282,7 @@ export default class ArrayInput extends React.Component<Props, State> {
 
     const events$ = uploader
       .upload(file, type)
-      .map(uploadEvent => PatchEvent.from(uploadEvent.patches).prefixAll({_key: key}))
+      .pipe(map(uploadEvent => PatchEvent.from(uploadEvent.patches).prefixAll({_key: key})))
 
     this.uploadSubscriptions = {
       ...this.uploadSubscriptions,
